@@ -2,9 +2,11 @@ import nltk
 from nltk.corpus import movie_reviews
 import random
 import csv
-with open('file.csv', 'rb') as f:
+with open('dataset.txt', 'rb') as f:
 	reader = csv.reader(f)
-	dataset = list(reader)
+	dataset = list()
+	for line in reader:
+		dataset.append((line[0],line[1]))
 
 documents = dataset
 random.shuffle(documents)
