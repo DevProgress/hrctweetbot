@@ -3,33 +3,42 @@
 
 # lmd_test user id: 784831043819802624
 
-import tweepy, json, sys
+import tweepy, json, sys, string
 
 config_file = str(sys.argv[1])
 fin = open(config_file)
 config = json.load(fin)
 fin.close()
 
-MY_USER_ID = config['USER_ID']
-CONSUMER_KEY = config['CONSUMER_KEY']
-CONSUMER_SECRET = config['CONSUMER_SECRET']
-ACCESS_KEY = config['ACCESS_KEY']
-ACCESS_SECRET = config['ACCESS_SECRET']
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+my_user_id = config['user_id']
+consumer_key = config['consumer_key']
+consumer_secret = config['consumer_secret']
+access_key = config['access_key']
+access_secret = config['access_secret']
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.secure = True
-auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
+def reply_function(tweet_content):
+    return 'You said {}'.format(tweet_content)
+
 class BotStreamListener(tweepy.StreamListener):
+    # def __init__(self, reply_function):
+    #     self.reply_function = reply_function
+
     def on_status(self, status):
         if 'retweeted_status' in status._json:
             pass
         else:
-            if status.user.id == MY_USER_ID:
-                if MY_USER_ID in map(lambda x: x['id'], status.entities['user_mentions']):
-                    response = '@{} nice to hear from you'.format(status.user.screen_name)
+            if status.user.id == my_user_id:
+                user_mentions = filter(lambda x: x['id'], status.entities['user_mentions'])
+                if len(user_mentions) > 0:
+                    username = '@{}'.format(user_mentions[0]['screen_name'])
+                    tweet_content = string.replace(status.text, username, '')
                 else:
-                    response = '@{} hello'.format(status.user.screen_name)
+                    tweet_content = status.text
+                response = '@{} {}'.format(status.user.screen_name, reply_function(tweet_content))
                 api.update_status(response, in_reply_to_status_id = status.id)
                 print("\nNew tweet:")
                 print(status._json['text'])
@@ -40,6 +49,7 @@ class BotStreamListener(tweepy.StreamListener):
             #returning False in on_data disconnects the stream
             return False
 
-botStreamListener = BotStreamListener()
+
+botStreamListener = BotStreamListener()#reply)
 botStream = tweepy.Stream(auth = auth, listener = botStreamListener)
 botStream.filter(track = ['clinton trump'])
