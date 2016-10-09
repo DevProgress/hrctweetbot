@@ -22,6 +22,11 @@ api = tweepy.API(auth)
 wit_client = wit.Wit(access_token=WIT_AI)
 test_account = 784989766685044736
 
+
+def strip_non_ascii(text):
+	return ''.join([i if ord(i) < 128 else '' for i in text])
+
+
 class BotStreamListener(tweepy.StreamListener):
 	def on_status(self, status):
 		print("\nNew tweet:")
@@ -40,7 +45,7 @@ class BotStreamListener(tweepy.StreamListener):
 				reply = "Actually..have you read this? https://www.washingtonpost.com/news/post-politics/wp/2015/09/08/hillary-clinton-apologizes-for-e-mail-system-i-take-responsibility/ " + status.text.replace("@","")
 				response = '@{} {}'.format(status.user.screen_name, reply)
 				print "Actually posting!"
-				api.update_status(response.encode("utf-8"), in_reply_to_status_id = status.id)
+				api.update_status(strip_non_ascii(response.encode("utf-8")), in_reply_to_status_id = status.id)
 				print "I replied with ", response
 				pprint.pprint(status)
 		except:
