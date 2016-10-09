@@ -42,7 +42,7 @@ class BotStreamListener(tweepy.StreamListener):
 			if intent=="no_reply":
 				print "I would not have replied"
 			elif intent=="email_apology":
-				reply = "Actually..have you read this? https://www.washingtonpost.com/news/post-politics/wp/2015/09/08/hillary-clinton-apologizes-for-e-mail-system-i-take-responsibility/ " + status.text.replace("@","")
+				reply = "Actually..have you read this? https://www.washingtonpost.com/news/post-politics/wp/2015/09/08/hillary-clinton-apologizes-for-e-mail-system-i-take-responsibility/ "
 				response = '@{} {}'.format(status.user.screen_name, reply)
 				print "Actually posting!"
 				api.update_status(strip_non_ascii(response.encode("utf-8")), in_reply_to_status_id = status.id)
