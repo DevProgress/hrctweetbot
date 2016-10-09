@@ -43,7 +43,8 @@ class BotStreamListener(tweepy.StreamListener):
 				pprint.pprint(status)
 		except:
 			print "Error!"
-			pass
+			#pass
+			raise
 
 	def on_error(self, status_code):
 		if status_code == 420:
