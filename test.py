@@ -32,7 +32,7 @@ class BotStreamListener(tweepy.StreamListener):
             pass
         else:
             if status.user.id == my_user_id:
-                user_mentions = filter(lambda x: x['id'], status.entities['user_mentions'])
+                user_mentions = filter(lambda x: x['id'] == my_user_id, status.entities['user_mentions'])
                 if len(user_mentions) > 0:
                     username = '@{}'.format(user_mentions[0]['screen_name'])
                     tweet_content = string.replace(status.text, username, '')
