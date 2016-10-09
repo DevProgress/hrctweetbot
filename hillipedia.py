@@ -47,7 +47,7 @@ class BotStreamListener(tweepy.StreamListener):
 				print "Actually posting!"
 				api.update_status(strip_non_ascii(response.encode("utf-8")), in_reply_to_status_id = status.id)
 				print "I replied with ", response
-				pprint.pprint(status)
+				#pprint.pprint(status)
 		except:
 			print "Error!"
 			pass
