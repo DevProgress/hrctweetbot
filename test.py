@@ -20,7 +20,8 @@ api = tweepy.API(auth)
 class BotStreamListener(tweepy.StreamListener):
     def on_status(self, status):
         print("\nNew tweet:")
-        print(status.text)
+        print(status._json['text'])
+        print(status._json.keys())
 
     def on_error(self, status_code):
         if status_code == 420:
