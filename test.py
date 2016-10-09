@@ -38,7 +38,7 @@ class BotStreamListener(tweepy.StreamListener):
 				response = '@{} {}'.format(status.user.screen_name, reply)
 				if status.user.id == test_account:
 					print "Actually posting!"
-					api.update_status(response, in_reply_to_status_id = status.id)
+					api.update_status(response.encode("utf-8"), in_reply_to_status_id = status.id)
 				print "I replied with ", response
 				pprint.pprint(status)
 		except:
