@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# lmd_test user id: 784831043819802624
+
 import tweepy, json, sys
 
 config_file = str(sys.argv[1])
@@ -19,9 +21,12 @@ api = tweepy.API(auth)
 
 class BotStreamListener(tweepy.StreamListener):
     def on_status(self, status):
-        print("\nNew tweet:")
-        print(status._json['text'])
-        print(status._json.keys())
+        if 'retweeted_status' in status._json:
+            pass
+        else:
+            print("\nNew tweet:")
+            print(status._json['text'])
+            print(status._json.keys())
 
     def on_error(self, status_code):
         if status_code == 420:
