@@ -29,4 +29,4 @@ class BotStreamListener(tweepy.StreamListener):
 
 botStreamListener = BotStreamListener()
 botStream = tweepy.Stream(auth = auth, listener = botStreamListener)
-botStream.filter(track = ['clinton trump'])
+botStream.filter(track = ['hillary apologized emails'])
