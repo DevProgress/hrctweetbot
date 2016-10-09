@@ -10,6 +10,7 @@ fin = open(config_file)
 config = json.load(fin)
 fin.close()
 
+MY_USER_ID = config['USER_ID']
 CONSUMER_KEY = config['CONSUMER_KEY']
 CONSUMER_SECRET = config['CONSUMER_SECRET']
 ACCESS_KEY = config['ACCESS_KEY']
@@ -24,9 +25,15 @@ class BotStreamListener(tweepy.StreamListener):
         if 'retweeted_status' in status._json:
             pass
         else:
-            print("\nNew tweet:")
-            print(status._json['text'])
-            print(status._json.keys())
+            if status.user.id == MY_USER_ID:
+                if MY_USER_ID in map(lambda x: x['id'], status.entities['user_mentions']):
+                    response = '@{} nice to hear from you'.format(status.user.screen_name)
+                else:
+                    response = '@{} hello'.format(status.user.screen_name)
+                api.update_status(response, in_reply_to_status_id = status.id)
+                print("\nNew tweet:")
+                print(status._json['text'])
+                print(json.dumps(status._json, indent = 4))
 
     def on_error(self, status_code):
         if status_code == 420:
