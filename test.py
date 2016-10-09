@@ -19,6 +19,7 @@ auth.secure = True
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 wit_client = wit.Wit(access_token=WIT_AI)
+test_account = 784989766685044736
 
 class BotStreamListener(tweepy.StreamListener):
 	def on_status(self, status):
@@ -32,7 +33,10 @@ class BotStreamListener(tweepy.StreamListener):
 			if intent=="no_reply":
 				print "I would not have replied"
 			elif intent=="email_apology":
-				print "I would have sent them this link: https://www.washingtonpost.com/news/post-politics/wp/2015/09/08/hillary-clinton-apologizes-for-e-mail-system-i-take-responsibility/"
+				response = "Have you read this? https://www.washingtonpost.com/news/post-politics/wp/2015/09/08/hillary-clinton-apologizes-for-e-mail-system-i-take-responsibility/"
+				if status.user.id == test_account:
+					api.update_status(response, in_reply_to_status_id = status.id)
+				print "I replied with ", response
 		except:
 			print "Error!"
 			pass
