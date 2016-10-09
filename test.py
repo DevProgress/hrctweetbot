@@ -10,6 +10,8 @@ fin = open(config_file)
 config = json.load(fin)
 fin.close()
 
+test_account = 784989766685044736
+
 my_user_id = config['user_id']
 consumer_key = config['consumer_key']
 consumer_secret = config['consumer_secret']
@@ -31,7 +33,7 @@ class BotStreamListener(tweepy.StreamListener):
         if 'retweeted_status' in status._json:
             pass
         else:
-            if status.user.id == my_user_id:
+            if status.user.id == test_account:
                 user_mentions = filter(lambda x: x['id'] == my_user_id, status.entities['user_mentions'])
                 if len(user_mentions) > 0:
                     username = '@{}'.format(user_mentions[0]['screen_name'])
